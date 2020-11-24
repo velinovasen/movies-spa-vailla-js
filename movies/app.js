@@ -2,6 +2,7 @@ const routes = {
     'home': 'home-template',
     'login': 'login-form-template',
     'register': 'register-form-template',
+    'addmovie': 'add-movie-template',
 }
 
 const router = async (path) => {
@@ -15,9 +16,14 @@ const router = async (path) => {
     
     const template = Handlebars.compile(document.getElementById(routes[path]).innerHTML);  // load the template that matches the url 
 
-    let authData = services.getUserData()  
+    let templateData = authServices.getUserData()  
 
-    root.innerHTML = template(authData)  // passing the user data, if none returns false and empty string(for the navbar)
+    switch (path) {
+        case 'home':
+            templateData.movies = await movieServices.getAll()
+    }
+
+    root.innerHTML = template(templateData)  // passing the user data, if none returns false and empty string(for the navbar)
 
 };
 

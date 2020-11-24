@@ -1,6 +1,8 @@
-const apiKey = `AIzaSyAdq6V1PBaLcdy5julMi5PLf7hm5HYUy4U`;
+const apiKey = `AIzaSyCMmPch9Fw9u4XO8HTIe8t4znSmIQa_pnw`;
+const databaseURL = 'https://movies-2-5af54.firebaseio.com/';
 
-const services = {
+
+const authServices = {
     getUserData() {
         let userData = JSON.parse(localStorage.getItem('auth')) || {} // with JSON.parse(localSto...) we get the full auth as an object
         return {
@@ -40,6 +42,25 @@ const services = {
         })
 
     },
+}
 
+const movieServices = {
+    async addMovie(title, description, imageUrl) {
+        const response = await fetch(databaseURL + '.json', {
+            method: "POST",
+            body: JSON.stringify({title, description, imageUrl})
+        })
 
+        const data = await response.json()
+        console.log(data);
+    },
+
+    async getAll() {
+        const response = await fetch(databaseURL + '.json')
+
+        const data = await response.json()
+
+        console.log(data)
+        return data;
+    }
 }

@@ -10,12 +10,13 @@ function init_loader() {
 
 function addEventHandler(e) {
     e.preventDefault()
-    
+
+
     if(!e.target.classList.contains('nav-link')){      // we check if its a link we need
         return;
     };
 
-    const url = new URL(e.target.href) || '/home'   // change the url and navi
+    const url = new URL(e.target.href) || 'home'   // change the url and navi
     //smenqvame url-a
     history.pushState({}, '', url)
 
@@ -27,7 +28,7 @@ function onLoginSubmit(e) {
     e.preventDefault()
     let formData = new FormData(document.forms['login-form'])
 
-    services.login(formData.get('email'), formData.get('password')) // login 
+    authServices.login(formData.get('email'), formData.get('password')) // login 
     .then(data => {
         navigate('home')                        // redirect us to the home pages
     })
@@ -39,9 +40,17 @@ function onRegisterSubmit(e) {
     
     let formData = new FormData(document.forms['register-form'])
 
-    services.register(formData.get('email'), formData.get('password'))
+    let email = formData.get('email');
+    let password = formData.get('password');
+    let password2 = formData.get('repeatPassword')
+
+    if (password !== password2) {
+        return;
+    }
+
+    authServices.register(email, password)
     .then(res => 
-    services.login(formData.get('email'), formData.get('password')) // login 
+        authServices.login(email, password) // login 
     .then(data => {
         navigate('home')                        // redirect us to the home pages
     }))
@@ -50,6 +59,47 @@ function onRegisterSubmit(e) {
 
 function logOut() {
     localStorage.removeItem('auth')
+}
+
+
+function addMovieButton(event) {
+    event.preventDefault()
+
+    history.pushState({}, '', '/addmovie')
+
+    let root = document.getElementById('root');
+
+    const template = Handlebars.compile(document.getElementById('add-movie-template').innerHTML);
+
+    let authData = authServices.getUserData()
+
+    root.innerHTML = template(authData)
+
+}
+
+
+function onAddSubmitButton(event) {
+    event.preventDefault()
+
+    let formData = new FormData(document.getElementById('add-movie-form'))
+
+    let title = formData.get('title');
+    let description = formData.get('description');
+    let imageUrl = formData.get('imageUrl')
+
+    if (!title || !description || !imageUrl) {
+        return;
+    }
+
+    movieServices.addMovie(title, description, imageUrl)
+    .then(res => {
+        navigate('home')
+    })
+
+    document.getElementById('movie-title-input').value = '';
+    document.getElementById('description-input').value = '';
+    document.getElementById('image-url-input').value = '';
+
 }
 
 
