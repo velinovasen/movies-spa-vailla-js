@@ -16,23 +16,7 @@
 
 <body>  
     <div class="container" id="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navigation">
-            <a class="navbar-brand text-light nav-link" href="/home">Movies</a>
-            <ul class="navbar-nav ml-auto "> 
-                <li class="nav-item">
-                    <a class="nav-link">Welcome, email</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li> 
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li> 
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
-                </li> 
-            </ul>
-        </nav>
+        
         
         <section class="notifications" style="display: none;">
             <p class="notification-message" id="errorBox">Message...</p>
@@ -160,8 +144,32 @@
             </div>
         </footer>
     </div>
+    
+    <script type="text/x-handlebars-template" id="navigation-template">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navigation" onclick="addEventHandler(event)">
+            <a class="navbar-brand text-light nav-link" href="/home">Movies</a>
+            <ul class="navbar-nav ml-auto "> 
+                {{#if isAuthenticated}}
+                <li class="nav-item">
+                    <a class="nav-link">Welcome, {{email}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" onclick="logOut()">Logout</a>
+                </li> 
+                {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li> 
+                {{/if}}
+            </ul>
+        </nav>
+    </script>
 
     <script type="text/x-handlebars-template" id="login-form-template">
+        {{>navbar}}
         <form id="login-form" class="text-center border border-light p-5" onsubmit="onLoginSubmit(event)">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -177,6 +185,7 @@
     </script>
 
     <script type="text/x-handlebars-template" id="register-form-template">
+        {{>navbar}}
         <form id="register-form" class="text-center border border-light p-5" onsubmit="onRegisterSubmit(event)">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -197,6 +206,7 @@
     </script>
 
     <script type="text/x-handlebars-template" id="home-template">
+        {{>navbar}}   
         <div class="jumbotron jumbotron-fluid text-light" style="background-color: #343a40;">
             <img src="https://s.studiobinder.com/wp-content/uploads/2019/06/Best-M-Night-Shyamalan-Movies-and-Directing-Style-StudioBinder.jpg"
                 class="img-fluid" alt="Responsive image">
