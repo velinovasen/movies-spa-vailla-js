@@ -1,4 +1,5 @@
 const routes = {
+    'home': 'home-template',
     'login': 'login-form-template',
     'register': 'register-form-template',
     'logout': 'logout-form-template',
@@ -15,31 +16,8 @@ const router = async (path) => {
 
 };
 
-function attachEventListeners() {
-    document.querySelector('.navigation').addEventListener('click', addEventHandler)
-};
+const navigate = (path) => {
+    history.pushState({}, '', path)
 
-function addEventHandler(e) {
-    e.preventDefault()
-    
-    // we check if its a link we need
-    if(!e.target.classList.contains('nav-link')){ 
-        return;
-};
-    const url = new URL(e.target.href)
-    //smenqvame url-a
-    history.pushState({}, '', url)
-
-    router(url.pathname.slice(1))
-};
-
-function onLoginSubmit(e) {
-    e.preventDefault()
-    console.log('submitni formata')
+    router(path)
 }
-
-function onRegisterSubmit(e) {
-    e.preventDefault()
-    console.log('regni me pacient')
-}
-attachEventListeners()

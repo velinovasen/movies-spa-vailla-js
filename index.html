@@ -10,12 +10,14 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
     <script src="app.js" defer></script>
+    <script src="authServices.js" defer></script> <!-- Make sure we have the correct order !!!-->
+    <script src="eventListeners.js" defer></script>
 </head>
 
 <body>  
     <div class="container" id="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark navigation">
-            <a class="navbar-brand text-light" href="#">Movies</a>
+            <a class="navbar-brand text-light nav-link" href="/home">Movies</a>
             <ul class="navbar-nav ml-auto "> 
                 <li class="nav-item">
                     <a class="nav-link">Welcome, email</a>
@@ -40,12 +42,7 @@
         </section> 
         
 
-        <!-- <div class="jumbotron jumbotron-fluid text-light" style="background-color: #343a40;">
-            <img src="https://s.studiobinder.com/wp-content/uploads/2019/06/Best-M-Night-Shyamalan-Movies-and-Directing-Style-StudioBinder.jpg"
-                class="img-fluid" alt="Responsive image">
-            <h1 class="display-4">Movies</h1>
-            <p class="lead">Unlimited movies, TV shows, and more. Watch anywhere. Cancel anytime.</p>
-        </div> 
+        <!-- 
         
         <h1 class="text-center">Movies</h1>
         <section>
@@ -165,7 +162,7 @@
     </div>
 
     <script type="text/x-handlebars-template" id="login-form-template">
-        <form class="text-center border border-light p-5" onsubmit="onLoginSubmit(event)">
+        <form id="login-form" class="text-center border border-light p-5" onsubmit="onLoginSubmit(event)">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" placeholder="Email" name="email" value="">
@@ -180,7 +177,7 @@
     </script>
 
     <script type="text/x-handlebars-template" id="register-form-template">
-        <form class="text-center border border-light p-5" onsubmit="onRegisterSubmit(event)">
+        <form id="register-form" class="text-center border border-light p-5" onsubmit="onRegisterSubmit(event)">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" placeholder="Email" name="email" value="">
@@ -199,9 +196,15 @@
         </form>
     </script>
 
-    <script type="text/x-handlebars-template" id="logout-form-template">
-
+    <script type="text/x-handlebars-template" id="home-template">
+        <div class="jumbotron jumbotron-fluid text-light" style="background-color: #343a40;">
+            <img src="https://s.studiobinder.com/wp-content/uploads/2019/06/Best-M-Night-Shyamalan-Movies-and-Directing-Style-StudioBinder.jpg"
+                class="img-fluid" alt="Responsive image">
+            <h1 class="display-4">Movies</h1>
+            <p class="lead">Unlimited movies, TV shows, and more. Watch anywhere. Cancel anytime.</p>
+        </div> 
     </script>
+
 
 </body>
 </html>
