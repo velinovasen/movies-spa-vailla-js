@@ -8,7 +8,18 @@ const routes = {
 }
 
 const router = async (fullPath) => {
-    let [path, id, param] = fullPath.split('/');
+    let path;
+    let search;
+    let id;
+    let param;
+    let searchText;
+    try {
+        [path, search] = fullPath.split('?')
+        path = path.slice(1)
+        searchText = search.split('=')[1];
+    } catch {
+    [path, id, param] = fullPath.split('/');
+    }
     let root = document.getElementById('root');
     let templateData = authServices.getUserData(); 
 
@@ -25,8 +36,14 @@ const router = async (fullPath) => {
             path = 'login'                     // if its logout change the path to login
             return navigate(path);
         case 'home':
+            if (searchText) {
+                movie = await movieServices.getMovieSearch(searchText) // we get the movie we search
+                templateData.movies = {movie};
+                break
+            } else {
             templateData.movies = await movieServices.getAll() // get all Movies and assign them into the templateData
             break
+            }
         case 'details':
             movie = await movieServices.getOne(id)
             Object.assign(templateData, movie, {id});         // assign the movie to the templateData
@@ -48,8 +65,12 @@ const router = async (fullPath) => {
         default:
             break
         }
-        
-    let template = Handlebars.compile(document.getElementById(templateId).innerHTML); // get the html
+    let template;
+    try {
+    template = Handlebars.compile(document.getElementById(templateId).innerHTML); // get the html
+    } catch {
+        template = Handlebars.compile(document.getElementById('home-template').innerHTML);
+    }
     console.log(templateData)
     root.innerHTML = template(templateData)  // passing the user data, if none returns false and empty string(for the navbar)
 
@@ -60,3 +81,4 @@ const navigate = (path) => {
 
     router(path) // load the template that responds to this url
 }
+

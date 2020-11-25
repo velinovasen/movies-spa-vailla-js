@@ -116,8 +116,16 @@ const movieServices = {
     async deleteMovie(movieId) {
         const response = await fetch(databaseURL + movieId + '.json', {
             method: "DELETE"
-        })
+        })   
+    },
 
+    async getMovieSearch(searchText) {
+        const response = await fetch(databaseURL + '.json')
         
+        const movies = await response.json()
+
+        let movieResult = Object.values(movies).find(value => Object.keys(value).find(key => value[key] === searchText));
+
+        return movieResult;
     }
 }

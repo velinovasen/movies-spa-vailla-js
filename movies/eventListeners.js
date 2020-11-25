@@ -154,4 +154,15 @@ function onDeleteMovie(e, movieId) {
 
 }
 
+function onSearchButton(e) {
+    e.preventDefault()
+
+    let searchText = document.getElementById('search-text').value;
+
+    navigate(`/home?search=${searchText}`)
+}
+
 init_loader() 
+window.onpopstate = function(event) {
+    navigate(location.href)
+}

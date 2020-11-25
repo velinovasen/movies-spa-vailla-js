@@ -117,8 +117,8 @@
             <a href="/addmovie" class="btn btn-warning " onclick="addMovieButton(event)">Add Movie</a>
             <form class="search float-right">
                 <label>Search: </label>
-                <input type="text">
-                <input type="submit" class="btn btn-info" value="Search">
+                <input type="text" id="search-text">
+                <input type="submit" class="btn btn-info" value="Search" onclick="onSearchButton(event)">
             </form>
         </section>
         {{#if movies}}
