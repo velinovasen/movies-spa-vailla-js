@@ -31,6 +31,16 @@ const router = async (fullPath) => {
             movie = await movieServices.getOne(id)
             Object.assign(templateData, movie, {id});         // assign the movie to the templateData
 
+            let { localId } = authServices.getUserData()
+            try {
+            let hasLiked = Boolean(Object.keys(movie.likes).find(key => key == localId));   // check if the user has liked the post already
+            templateData.hasLiked = hasLiked
+            let totalLikes = 0;
+            Object.keys(movie.likes).forEach(key => totalLikes += 1);
+            templateData.totalLikes = totalLikes;
+            } catch(error) {
+                console.log(error)
+            }
             if (param == 'edit') { 
                 templateId = 'edit-movie-template'
             }

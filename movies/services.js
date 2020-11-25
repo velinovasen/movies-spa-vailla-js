@@ -7,7 +7,8 @@ const authServices = {
         let userData = JSON.parse(localStorage.getItem('auth')) || {} // with JSON.parse(localSto...) we get the full auth as an object
         return {
             isAuthenticated: Boolean(userData.idToken),
-            email: userData.email || ''
+            email: userData.email || '',
+            localId: userData.localId
         };
     },
 
@@ -92,20 +93,31 @@ const movieServices = {
         if (data.creator === authServices.getUserData().email) {
             isCreator = true
         }
+        
         data.isCreator = isCreator;
+        console.log(data)
         return data;
     },
 
-    async likeMovie(id, creator) {
-        const response = await fetch(databaseURL + id + '.json', {
+    async likeMovie(movieId, creator, userId) {
+        const response = await fetch(databaseURL + movieId + '/likes/' + userId + '/.json', {
             method: "PATCH",
             body: JSON.stringify({
-
+                creator
             })
         });
 
         const data = await response.json();
 
+        return data;
 
+    },
+
+    async deleteMovie(movieId) {
+        const response = await fetch(databaseURL + movieId + '.json', {
+            method: "DELETE"
+        })
+
+        
     }
 }

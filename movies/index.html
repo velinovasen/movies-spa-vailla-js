@@ -179,12 +179,15 @@
                     <h3 class="my-3 ">Movie Description</h3>
                     <p>{{description}}</p>
                     {{#if isCreator}}
-                    <a class="btn btn-danger" href="#" data-id="{{id}}">Delete</a>
+                    <a class="btn btn-danger" href="/details/{{id}}/delete" data-id="{{id}}" onclick="onDeleteMovie(event, '{{id}}')">Delete</a>
                     <a class="btn btn-warning" href="/details/{{id}}/edit" onclick="addEventHandler(event)">Edit</a>
                     {{else}}
-                    <a class="btn btn-primary" href="/details/{{id}}/like" onclick="onMovieLike(event, '{{id}}')">Like</a>
+                        {{#if hasLiked}}
+                        <span class="enrolled-span">Liked {{totalLikes}}</span>
+                        {{else}}
+                        <a class="btn btn-primary" href="/details/{{id}}/like" onclick="onMovieLike(event, '{{id}}')">Like</a>
+                        {{/if}}
                     {{/if}}
-                    <span class="enrolled-span">Liked 1</span>
 
 
                 </div>

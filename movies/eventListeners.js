@@ -86,16 +86,7 @@ function logOut() {
 function addMovieButton(event) {
     event.preventDefault()
 
-    history.pushState({}, '', '/addmovie')
-
-    let root = document.getElementById('root');
-
-    const template = Handlebars.compile(document.getElementById('add-movie-template').innerHTML);
-
-    let authData = authServices.getUserData()
-
-    root.innerHTML = template(authData)
-
+    navigate('addmovie')
 }
 
 
@@ -143,13 +134,24 @@ function editSubmitButton(e) {                          // edit submit button, i
 
 }
 
-function onMovieLike(e, id) {               // press like button
+function onMovieLike(e, movieId) {               // press like button
     e.preventDefault()
-    console.log(e.target)
-    console.log(id)
-    let { email } = authServices.getUserData();
+    let { email, localId } = authServices.getUserData();
 
-    movieServices.likeMovie(id, email);
+    movieServices.likeMovie(movieId, email, localId)
+    .then(res => {
+        navigate(`details/${movieId}`)
+    })
+}
+
+function onDeleteMovie(e, movieId) {
+    e.preventDefault()
+
+    movieServices.deleteMovie(movieId)
+    .then(res => {
+        navigate('home')
+    })
+
 }
 
 init_loader() 
