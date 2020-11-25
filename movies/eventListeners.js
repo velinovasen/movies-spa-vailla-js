@@ -10,14 +10,23 @@ function init_loader() {
 
 function addEventHandler(e) {
     e.preventDefault()
+    console.log(e.target.getAttribute('href'))
 
-
-    if(!e.target.classList.contains('nav-link')){      // we check if its a link we need
+    if(!e.target.classList.contains('nav-link') && !e.target.innerText === 'Details'){      // we check if its a link we need
         return;
     };
+    
+    let url;
+    if(e.target.innerText === 'Details') {
+        url = e.target.getAttribute('href')
+        history.pushState({}, '', url)
 
-    const url = new URL(e.target.href) || 'home'   // change the url and navi
-    //smenqvame url-a
+        router(url.slice(1))
+        return;   
+    } else {
+        url = new URL(e.target.href) || 'home' 
+    }
+    // change the url and navi
     history.pushState({}, '', url)
 
     router(url.pathname.slice(1))     // make sure we strip the '/' off of the url

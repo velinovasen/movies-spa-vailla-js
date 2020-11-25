@@ -46,7 +46,7 @@ const authServices = {
 
 const movieServices = {
     async addMovie(title, description, imageUrl) {
-        const response = await fetch(databaseURL + '.json', {
+        const response = await fetch(databaseURL + '.json', {      //add movie in database
             method: "POST",
             body: JSON.stringify({title, description, imageUrl})
         })
@@ -56,7 +56,17 @@ const movieServices = {
     },
 
     async getAll() {
-        const response = await fetch(databaseURL + '.json')
+        const response = await fetch(databaseURL + '.json')     //get all movies
+
+        const data = await response.json()
+
+        console.log(Object.keys(data).map(key => Object.assign(data[key], {key})))
+        // ({key, ...res[key]})  also works instead Object.assign !!!
+        return Object.keys(data).map(id => Object.assign(data[id], {id}));     // WE PASS THE ID !!! SO WE CAN ADD IT IN THE REDURECT THE DETAILS BUTTON BY ITS ID
+    },
+
+    async getOne(id) {
+        const response = await fetch(databaseURL + id + '.json')
 
         const data = await response.json()
 
