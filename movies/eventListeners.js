@@ -10,9 +10,8 @@ function init_loader() {
 
 function addEventHandler(e) {
     e.preventDefault()
-    console.log(e.target.getAttribute('href'))
 
-    if(!e.target.classList.contains('nav-link') && !e.target.innerText === 'Details'){      // we check if its a link we need
+    if(!e.target.classList.contains('nav-link') && !e.target.innerText === 'Details' && !e.target.innerText === 'Edit'){      // we check if its a link we need
         return;
     };
     
@@ -23,13 +22,26 @@ function addEventHandler(e) {
 
         router(url.slice(1))
         return;   
+    } else if(e.target.innerText === 'Edit') {
+        url = e.target.getAttribute('href')
+        history.pushState({}, '', url)
+
+        router(url.slice(1))
+        return;
     } else {
-        url = new URL(e.target.href) || 'home' 
+        try {
+            url = new URL(e.target.href)
+        } catch {
+            url = 'home'
+        } 
     }
     // change the url and navi
     history.pushState({}, '', url)
-
-    router(url.pathname.slice(1))     // make sure we strip the '/' off of the url
+    try {
+        router(url.pathname.slice(1))     // make sure we strip the '/' off of the url
+    } catch {
+        router(url)
+    }
 };
 
 
@@ -95,12 +107,11 @@ function onAddSubmitButton(event) {
     let title = formData.get('title');
     let description = formData.get('description');
     let imageUrl = formData.get('imageUrl')
+    let { email } = authServices.getUserData();
 
-    if (!title || !description || !imageUrl) {
-        return;
-    }
 
-    movieServices.addMovie(title, description, imageUrl)
+
+    movieServices.addMovie(email, title, description, imageUrl)
     .then(res => {
         navigate('home')
     })
@@ -111,5 +122,34 @@ function onAddSubmitButton(event) {
 
 }
 
+function editSubmitButton(e) {                          // edit submit button, implement small verification 
+    e.preventDefault()
 
-init_loader()
+    let formData = new FormData(document.getElementById('edit-movie-form'));
+
+    let title = formData.get('title');
+    let description = formData.get('description');
+    let imageUrl = formData.get('imageUrl');
+    let id = e.target.getAttribute('data-id');
+
+    if (!title || !description || !imageUrl) {
+        return;
+    }
+
+    movieServices.editMovie(title, description, imageUrl, id)
+    .then(res => {
+        navigate('home')
+    })
+
+}
+
+function onMovieLike(e, id) {               // press like button
+    e.preventDefault()
+    console.log(e.target)
+    console.log(id)
+    let { email } = authServices.getUserData();
+
+    movieServices.likeMovie(id, email);
+}
+
+init_loader() 

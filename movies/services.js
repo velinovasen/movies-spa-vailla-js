@@ -45,14 +45,33 @@ const authServices = {
 }
 
 const movieServices = {
-    async addMovie(title, description, imageUrl) {
+    async addMovie(email, title, description, imageUrl) {
         const response = await fetch(databaseURL + '.json', {      //add movie in database
             method: "POST",
-            body: JSON.stringify({title, description, imageUrl})
+            body: JSON.stringify({
+                creator: email,
+                title, 
+                description, 
+                imageUrl
+            })
         })
 
         const data = await response.json()
         console.log(data);
+    },
+
+    async editMovie(title, description, imageUrl, id) {
+        const response = await fetch(databaseURL + id + '.json', {
+            method: "PATCH",
+            body: JSON.stringify({
+                title,
+                description,
+                imageUrl
+            })
+        })
+
+        const data = await response.json()
+
     },
 
     async getAll() {
@@ -69,8 +88,24 @@ const movieServices = {
         const response = await fetch(databaseURL + id + '.json')
 
         const data = await response.json()
-
-        console.log(data)
+        let isCreator = false;
+        if (data.creator === authServices.getUserData().email) {
+            isCreator = true
+        }
+        data.isCreator = isCreator;
         return data;
+    },
+
+    async likeMovie(id, creator) {
+        const response = await fetch(databaseURL + id + '.json', {
+            method: "PATCH",
+            body: JSON.stringify({
+
+            })
+        });
+
+        const data = await response.json();
+
+
     }
 }
