@@ -16,7 +16,7 @@ function addEventHandler(e) {
         return;
     };
     
-    let url;
+    let url;    
     if(e.target.innerText === 'Details') {
         url = e.target.getAttribute('href')
         history.pushState({}, '', url)
